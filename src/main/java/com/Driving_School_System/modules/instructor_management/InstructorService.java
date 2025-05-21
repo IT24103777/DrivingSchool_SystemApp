@@ -14,7 +14,7 @@ public class InstructorService {
     private static final String FILE_PATH = "instructors.txt";
     private static final String DIRECTORY_PATH = "./";
 
-    // Create or update an instructor
+   
     public boolean save(InstructorModel instructor) {
         createDirectoryIfNotExists();
 
@@ -35,7 +35,7 @@ public class InstructorService {
         }
     }
 
-    // Get an instructor by ID
+   
     public Optional<InstructorModel> getById(Long id) {
         List<InstructorModel> instructors = getAll();
         return instructors.stream()
@@ -43,7 +43,7 @@ public class InstructorService {
                 .findFirst();
     }
 
-    // Get all instructors
+    
     public List<InstructorModel> getAll() {
         List<InstructorModel> instructors = new ArrayList<>();
         File file = new File(FILE_PATH);
@@ -64,7 +64,7 @@ public class InstructorService {
         return instructors;
     }
 
-    // Update an instructor
+  
     public boolean update(InstructorModel instructor) {
         if (instructor.getId() == null) {
             return false;
@@ -88,7 +88,7 @@ public class InstructorService {
         return false;
     }
 
-    // Delete an instructor by ID
+    
     public boolean delete(Long id) {
         List<InstructorModel> instructors = getAll();
         boolean removed = instructors.removeIf(instructor -> instructor.getId().equals(id));
@@ -100,7 +100,7 @@ public class InstructorService {
         return false;
     }
 
-    // Save all instructors (overwrite the file)
+    
     private boolean saveAll(List<InstructorModel> instructors) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
             for (InstructorModel instructor : instructors) {
@@ -114,7 +114,7 @@ public class InstructorService {
         }
     }
 
-    // Helper method to format an instructor as a string for file storage
+    
     private String formatInstructor(InstructorModel instructor) {
         return String.join("|",
                 String.valueOf(instructor.getId()),
@@ -129,7 +129,7 @@ public class InstructorService {
         );
     }
 
-    // Helper method to parse an instructor from a string
+    
     private InstructorModel parseInstructor(String line) {
         String[] parts = line.split("\\|");
         InstructorModel instructor = new InstructorModel();
@@ -142,7 +142,7 @@ public class InstructorService {
         instructor.setNicNumber(parts[6]);
         instructor.setAge(Integer.parseInt(parts[7]));
 
-        // Set createdAt if available
+        
         if (parts.length > 8 && parts[8] != null && !parts[8].isEmpty()) {
             try {
                 instructor.setCreatedAt(java.time.LocalDateTime.parse(parts[8]));
@@ -156,7 +156,7 @@ public class InstructorService {
         return instructor;
     }
 
-    // Get the next available ID
+   
     private Long getNextId() {
         List<InstructorModel> instructors = getAll();
 
@@ -170,7 +170,7 @@ public class InstructorService {
                 .orElse(0) + 1;
     }
 
-    // Create directory if it doesn't exist
+    
     private void createDirectoryIfNotExists() {
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
@@ -178,15 +178,12 @@ public class InstructorService {
         }
     }
 
-    /**
-     * Stores all instructor data in a custom queue and returns it
-     * @return CustomQueue containing all instructor records
-     */
+   
     public CustomQueue<InstructorModel> getInstructorsInQueue() {
         List<InstructorModel> instructors = getAll();
         CustomQueue<InstructorModel> instructorQueue = new CustomQueue<>();
 
-        // Add all instructors to the queue
+       
         for (InstructorModel instructor : instructors) {
             instructorQueue.enqueue(instructor);
         }
@@ -194,51 +191,41 @@ public class InstructorService {
         return instructorQueue;
     }
 
-    /**
-     * Sorts the list of instructors by their name using bubble sort
-     * @return List of instructors sorted by name
-     */
+   
     public List<InstructorModel> getInstructorsSortedByName() {
         List<InstructorModel> instructors = getAll();
 
-        // Create a comparator to sort instructors by name
+        
         Comparator<InstructorModel> nameComparator = Comparator.comparing(InstructorModel::getName);
 
-        // Use the CustomBubbleSort utility to sort the list
+       
         CustomBubbleSort.sortList(instructors, nameComparator);
 
         return instructors;
     }
 
-    /**
-     * Sorts the list of instructors by their age using bubble sort
-     * @return List of instructors sorted by age (youngest first)
-     */
+   
     public List<InstructorModel> getInstructorsSortedByAge() {
         List<InstructorModel> instructors = getAll();
 
-        // Create a comparator to sort instructors by age
+        
         Comparator<InstructorModel> ageComparator = Comparator.comparing(InstructorModel::getAge);
 
-        // Use the CustomBubbleSort utility to sort the list
+        
         CustomBubbleSort.sortList(instructors, ageComparator);
 
         return instructors;
     }
 
-    /**
-     * Processes instructors in queue order and returns them as a list
-     * This demonstrates using the queue for processing
-     * @return List of instructors processed from the queue
-     */
+   
     public List<InstructorModel> processInstructorsFromQueue() {
         CustomQueue<InstructorModel> instructorQueue = getInstructorsInQueue();
         List<InstructorModel> processedInstructors = new ArrayList<>();
 
-        // Process each instructor from the queue
+        
         while (!instructorQueue.isEmpty()) {
             InstructorModel instructor = instructorQueue.dequeue();
-            // In a real application, you might do additional processing here
+            
             processedInstructors.add(instructor);
         }
 
