@@ -162,7 +162,7 @@ public class StudentController extends HttpServlet {
         }
     }
 
-    // Handle DELETE requests - Delete a student
+   
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
