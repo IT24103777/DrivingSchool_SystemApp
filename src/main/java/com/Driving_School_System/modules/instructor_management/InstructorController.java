@@ -25,7 +25,7 @@ public class InstructorController extends HttpServlet {
         objectMapper.registerModule(new JavaTimeModule());
     }
 
-    // Handle GET requests - Get all instructors or get by ID
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,27 +37,27 @@ public class InstructorController extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         try {
-            // Check for special sorting or queue operations
+            
             if (pathInfo != null) {
-                // Sort instructors by name
+                
                 if (pathInfo.equals("/sortByName")) {
                     List<InstructorModel> sortedInstructors = instructorService.getInstructorsSortedByName();
                     out.print(objectMapper.writeValueAsString(sortedInstructors));
                     return;
                 }
-                // Sort instructors by age
+                
                 else if (pathInfo.equals("/sortByAge")) {
                     List<InstructorModel> sortedInstructors = instructorService.getInstructorsSortedByAge();
                     out.print(objectMapper.writeValueAsString(sortedInstructors));
                     return;
                 }
-                // Process instructors using queue
+                
                 else if (pathInfo.equals("/queue")) {
                     List<InstructorModel> queuedInstructors = instructorService.processInstructorsFromQueue();
                     out.print(objectMapper.writeValueAsString(queuedInstructors));
                     return;
                 }
-                // Get instructor by ID
+                
                 else if (!pathInfo.equals("/")) {
                     String[] pathParts = pathInfo.split("/");
                     if (pathParts.length > 1) {
@@ -75,7 +75,7 @@ public class InstructorController extends HttpServlet {
                 }
             }
 
-            // Default: Get all instructors
+            
             List<InstructorModel> instructors = instructorService.getAll();
             out.print(objectMapper.writeValueAsString(instructors));
 
@@ -88,7 +88,7 @@ public class InstructorController extends HttpServlet {
         }
     }
 
-    // Handle POST requests - Create a new instructor
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -97,11 +97,11 @@ public class InstructorController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         try {
-            // Read request body
+            
             String requestBody = request.getReader().lines().collect(Collectors.joining());
             InstructorModel instructor = objectMapper.readValue(requestBody, InstructorModel.class);
 
-            // Save the instructor
+            
             boolean success = instructorService.save(instructor);
 
             if (success) {
@@ -120,7 +120,7 @@ public class InstructorController extends HttpServlet {
         }
     }
 
-    // Handle PUT requests - Update an existing instructor
+    
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -132,18 +132,18 @@ public class InstructorController extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         try {
-            // Check if ID is provided
+            
             if (pathInfo != null && !pathInfo.equals("/")) {
                 String[] pathParts = pathInfo.split("/");
                 if (pathParts.length > 1) {
                     Long id = Long.parseLong(pathParts[1]);
 
-                    // Read request body
+                   
                     String requestBody = request.getReader().lines().collect(Collectors.joining());
                     InstructorModel instructor = objectMapper.readValue(requestBody, InstructorModel.class);
                     instructor.setId(id);
 
-                    // Update the instructor
+                   
                     boolean success = instructorService.update(instructor);
 
                     if (success) {
@@ -166,7 +166,7 @@ public class InstructorController extends HttpServlet {
         }
     }
 
-    // Handle DELETE requests - Delete an instructor
+   
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -178,13 +178,13 @@ public class InstructorController extends HttpServlet {
         String pathInfo = request.getPathInfo();
 
         try {
-            // Check if ID is provided
+            
             if (pathInfo != null && !pathInfo.equals("/")) {
                 String[] pathParts = pathInfo.split("/");
                 if (pathParts.length > 1) {
                     Long id = Long.parseLong(pathParts[1]);
 
-                    // Delete the instructor
+                   
                     boolean success = instructorService.delete(id);
 
                     if (success) {
