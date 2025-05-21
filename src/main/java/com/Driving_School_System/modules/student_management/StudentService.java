@@ -137,7 +137,7 @@ public class StudentService {
             parts = line.split("\\|");
         } else {
 
-            parts = new String[8]; // Adjust based on your expected number of fields
+            parts = new String[8]; 
 
 
             int commaIndex = line.indexOf(",");
@@ -208,7 +208,7 @@ public class StudentService {
                 .orElse(0) + 1;
     }
 
-    // Create directory if it doesn't exist
+    
     private void createDirectoryIfNotExists() {
         File directory = new File(DIRECTORY_PATH);
         if (!directory.exists()) {
